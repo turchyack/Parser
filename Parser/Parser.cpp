@@ -5,9 +5,6 @@
 #include <winsock2.h>
 #pragma comment(lib, "Ws2_32.lib")
 
-
-
-
 class Frame {
 public:
     uint16_t Version;
@@ -25,14 +22,11 @@ private:
     std::vector<Frame> Frames;
 public:
     void LoadFromFile(const std::string& fileName) {
-        std::ifstream file(fileName, std::ios::binary);
-        if (!file.is_open()) {
-            std::cerr << "Error opening file: " << fileName << std::endl;
-            return;
-        }
+
+       std::ifstream file(fileName, std::ios::binary);
+               
         while (file.peek() != EOF) {
             Frame frame;
-
             file.read(reinterpret_cast<char*>(&frame.Version), sizeof(uint16_t));
             char identifier[2];
             file.read(identifier, 2);
@@ -58,6 +52,7 @@ public:
             file.read(reinterpret_cast<char*>(&frame.EndMarker), sizeof(uint16_t));
 
             Frames.push_back(frame);
+            std::cout << i << " frame" << std::endl;
         }
 
         file.close();
@@ -67,8 +62,6 @@ public:
     }
 
 };
-
-using namespace std;
 
 int main() {
     FrameParser frameParser;
