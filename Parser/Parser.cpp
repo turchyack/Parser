@@ -6,16 +6,16 @@
 #pragma comment(lib, "Ws2_32.lib")
 
 
-using namespace std;
+
 
 class Frame {
 public:
     uint16_t Version;
-    string Identifier;
+    std::string Identifier;
     uint16_t Address;
     uint16_t Command;
     uint32_t DataLength;
-    vector<uint8_t> Data;
+    std::vector<uint8_t> Data;
     uint16_t Checksum;
     uint16_t EndMarker;
 };
@@ -24,8 +24,8 @@ class FrameParser {
 private:
     std::vector<Frame> Frames;
 public:
-    void LoadFromFile(const string& fileName) {
-        ifstream file(fileName, ios::binary);
+    void LoadFromFile(const std::string& fileName) {
+        std::ifstream file(fileName, std::ios::binary);
         if (!file.is_open()) {
             std::cerr << "Error opening file: " << fileName << std::endl;
             return;
@@ -36,7 +36,7 @@ public:
             file.read(reinterpret_cast<char*>(&frame.Version), sizeof(uint16_t));
             char identifier[2];
             file.read(identifier, 2);
-            frame.Identifier = string(identifier, 2);
+            frame.Identifier = std::string(identifier, 2);
             file.seekg(22);
             file.read(reinterpret_cast<char*>(&frame.Address), sizeof(uint16_t));
 
@@ -67,6 +67,8 @@ public:
     }
 
 };
+
+using namespace std;
 
 int main() {
     FrameParser frameParser;
