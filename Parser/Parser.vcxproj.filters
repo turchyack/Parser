@@ -24,9 +24,4 @@
       <Filter>Исходные файлы</Filter>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="test.txt">
-      <Filter>Исходные файлы</Filter>
-    </Text>
-  </ItemGroup>
 </Project>

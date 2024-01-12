@@ -15,6 +15,7 @@ public:
     std::vector<uint8_t> Data;
     uint16_t Checksum;
     uint16_t EndMarker;
+    int read_from_stream(std::istream& stream);
 };
 
 void read_value(std::istream& stream, uint16_t& value) {
@@ -55,76 +56,24 @@ void read_value(std::istream& stream, char& value) {
    
     if (static_cast<size_t>(stream.gcount()) < sizeof(value)) {
         return;
-    }                                                           */                                // переделать на енумы пока не работает
+    }                                                           */                                // переделать на енумы пока не работает (костыль)
 }
 
 
 
-
-
-
-
-
-
-
-
-
-void read_file(const std::string& fpath) {
-    printf("debug: read_file(%s)\n", fpath.c_str());
-
-    auto file = std::ifstream(fpath, std::ios::binary);
-   
-    const size_t block_size = 100;
-    while (true) {
-        Frame frame;
-
-        read_value(file, frame.Version);
-        read_value(file, *frame.Identifier);
-        skip_read(file, 18);
-        read_value(file, frame.Address);
-        read_value(file, frame.Command);
-        read_value(file, frame.DataLength);
-        std::cout << frame.DataLength << std::endl;
-        read_value(file, frame.Data, frame.DataLength);
-        
-        read_value(file, frame.Checksum);
-        read_value(file, frame.EndMarker);
-        std::cout << file.tellg() << std::endl;
-        int a;
-        std::cin >> a;
-       
-
-       // read_value(file, frame.Version);
-      ////  read_value(file, *frame.Identifier);
-      //  read_value(file, frame.DataLength);
-      ////  frame.DataLength = 32;
-      //  read_value(file, frame.Data, frame.DataLength);
-
-
-
-
-       /* for (uint8_t elem : frame.Data) {
-            std::cout <<std::hex << elem << "-";
-        }
-        std::cout << std::hex << frame.Data.data() << std::endl;*/
-      //  read_value(file, frame.Data, frame.DataLength);
-               
-      
-    }
-}
 
 class FrameParser {
 private:
     std::vector<Frame> Frames;
 public:
+    void read_file(const std::string& fpath);
+
     void LoadFromFile(const std::string& fileName) {
-      // std::ifstream file(fileName, std::ios::binary);
         read_file(fileName);
-       
+        
     }
 
-    void SaveToText(const std::string& txtFileName) {
-    }
+    void SaveToText(const std::string& txtFileName);
 
 };
 
@@ -138,3 +87,39 @@ int main() {
 
     return 0;
 }
+
+int Frame::read_from_stream(std::istream& stream)
+{
+    read_value(stream, this->Version);
+    read_value(stream, *this->Identifier);
+    skip_read(stream, 18);
+    read_value(stream, this->Address);
+    read_value(stream, this->Command);
+    read_value(stream, this->DataLength);
+    std::cout << this->DataLength << std::endl;
+    read_value(stream, this->Data, this->DataLength);
+
+    read_value(stream, this->Checksum);
+    read_value(stream, this->EndMarker);
+    std::cout << stream.tellg() << std::endl;
+    if (stream.tellg() <=0) {
+        return -1;
+    }
+}
+
+void FrameParser::read_file(const std::string& fpath) {
+    printf("debug: read_file(%s)\n", fpath.c_str());
+
+    auto file = std::ifstream(fpath, std::ios::binary);
+
+    while (true) {
+        Frame frame;
+        if (frame.read_from_stream(file) == -1) {
+            break;
+        }
+        Frames.push_back(frame);
+
+    }
+    std::cout << "File is readed" << std::endl;
+}
+
