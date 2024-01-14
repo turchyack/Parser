@@ -4,48 +4,13 @@
 #include <iomanip>
 #include <cstring>
 #include "utils.h"
-
+#include "Identifier.h"
 
 class Frame {
 
-    public:
-
-    class Identificator {
-
-    
-        enum class Identification : uint16_t {
-            AN = 0,
-            CO
-        };
-    public:
-        Identification flag;
-
-        std::string ToStr() {
-            static const char* names[] = { "AN", "CO" };
-            return names[static_cast<size_t>(flag)];
-        }
-
-        void ReadIdentificatorValue(std::istream& stream) {
-            const size_t n = 2;
-            char temp[n];
-            stream.read(temp, n);
-
-            if (strncmp(temp, "AN", n) == 0) {
-                flag = Identification::AN;
-            }
-            else if (strncmp(temp, "CO", n) == 0) {
-                flag = Identification::CO;
-            }
-            else {
-                throw std::runtime_error("invalid identifier");
-            }
-            return;
-        }
-    };
-
 public:
     uint16_t Version;
-    Identificator Identificator;
+    Identifier Ident;
     size_t ServiceInfo = 18;
     uint16_t Address;
     uint16_t Command;
@@ -57,9 +22,6 @@ public:
     int ReadFromStream(std::istream& stream);
 };
 
-
-
-
 class FrameParser {
 private:
     std::vector<Frame> Frames;
@@ -67,7 +29,6 @@ public:
     void LoadFromFile(const std::string& fileName);
     void SaveToText(const std::string& txtFileName);
 };
-
 
 int main() {
     try {
@@ -88,7 +49,7 @@ int Frame::ReadFromStream(std::istream& stream) {
         return -1; 
     }
     utils::ReadValue(stream, this->Version);
-    Identificator.ReadIdentificatorValue(stream);
+    Ident.ReadFromStream(stream);
     utils::SkipRead(stream, this->ServiceInfo);
     utils::ReadValue(stream, this->Address);
     utils::ReadValue(stream, this->Command);
@@ -114,7 +75,7 @@ void FrameParser::SaveToText(const std::string& txtFileName) {
     outputFile << "index\tid\taddress\tcommand\tdataLength\n";
     for (size_t i = 0; i < Frames.size(); ++i) {
          Frame& frame = Frames[i];
-         outputFile << i << "\t" << frame.Identificator.ToStr()
+         outputFile << i << "\t" << frame.Ident.ToStr()
             << "\t" << std::hex << std::setw(4) << std::setfill('0') << frame.Address
             << "\t" << std::hex << std::setw(4) << std::setfill('0') << frame.Command
             << "\t" << std::dec << frame.DataLength << std::endl;

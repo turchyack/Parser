@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
@@ -134,12 +135,8 @@
     <None Include="..\..\..\..\Downloads\Telegram Desktop\test.raw" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Identifier.h" />
     <ClInclude Include="utils.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\parser test\parser test\parser test.vcxproj">
-      <Project>{66b20783-543b-4d7e-8cbd-9d2e21e5a11f}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

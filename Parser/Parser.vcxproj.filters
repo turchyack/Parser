@@ -21,6 +21,9 @@
     <ClCompile Include="utils.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\..\Downloads\Telegram Desktop\test.raw">
@@ -29,6 +32,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Identifier.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
