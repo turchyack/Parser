@@ -6,7 +6,6 @@
 
 class Identifier {
 
-    
 public:
     enum class Code {
         AN = 0,

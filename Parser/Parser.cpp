@@ -7,21 +7,22 @@
 #include "Identifier.h"
 #include "Parser.h"
 
+using namespace geodata::parser::utils;
 
 //возвращает 0 - если прочитан кадр и -1 - достигнут конец потока
 int Frame::ReadFromStream(std::istream& stream) {   
     if (stream.peek() == EOF) {
         return -1; 
     }
-    utils::ReadValue(stream, this->Version);
+    ReadValue(stream, this->Version);
     Ident.ReadFromStream(stream);
-    utils::SkipRead(stream, this->ServiceInfo);
-    utils::ReadValue(stream, this->Address);
-    utils::ReadValue(stream, this->Command);
-    utils::ReadValue(stream, this->DataLength);
-    utils::ReadValue(stream, this->Data, this->DataLength);
-    utils::ReadValue(stream, this->Checksum);
-    utils::ReadValue(stream, this->EndMarker);
+    SkipRead(stream, this->ServiceInfo);
+    ReadValue(stream, this->Address);
+    ReadValue(stream, this->Command);
+    ReadValue(stream, this->DataLength);
+    ReadValue(stream, this->Data, this->DataLength);
+    ReadValue(stream, this->Checksum);
+    ReadValue(stream, this->EndMarker);
 }
 
 void FrameParser::LoadFromFile(const std::string& fpath) {
