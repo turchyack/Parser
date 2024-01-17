@@ -35,15 +35,16 @@ namespace geodata {
             }
 
             void SkipRead(std::istream& stream, size_t length) {
-                const size_t n = 1;
-                char temp[n];
                 for (size_t i = 0; i < length; ++i) {
-                    stream.read(temp, n);
-                    if (static_cast<size_t>(stream.gcount()) < n) {
-                        throw std::runtime_error("Wrong format: unexpected EOF");
+                    if (stream.peek() != EOF) {
+                        stream.seekg(1, std::ios::cur);
                     }
+                    else { throw std::runtime_error("Wrong format: unexpected EOF"); }
                 }
             }
+
+
+
 
         }
     }
