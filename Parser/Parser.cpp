@@ -10,9 +10,9 @@
 using namespace geodata::parser::utils;
 
 //возвращает 0 - если прочитан кадр и -1 - достигнут конец потока
-int Frame::ReadFromStream(std::istream& stream) {   
+ReadResult Frame::ReadFromStream(std::istream& stream) {
     if (stream.peek() == EOF) {
-        return -1; 
+        return ReadResult::EndOfStream;
     }
     ReadValue(stream, this->Version);
     Ident.ReadFromStream(stream);
@@ -29,7 +29,7 @@ void FrameParser::LoadFromFile(const std::string& fpath) {
     auto file = std::ifstream(fpath, std::ios::binary);
     while (true) {
         Frame frame;
-        if (frame.ReadFromStream(file) == -1) {
+        if (frame.ReadFromStream(file) == ReadResult::EndOfStream) {
             break;
         }
         Frames.push_back(frame);

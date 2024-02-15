@@ -14,7 +14,7 @@ public:
 
     Code value;
 
-public:
+
     Identifier() : value(Code::AN) {}
     Identifier(const Code& code) : value(code) {}
     std::string ToStr();

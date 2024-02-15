@@ -9,6 +9,8 @@ namespace geodata {
 	namespace parser {
 
 		namespace utils {
+			enum class ReadResult;
+
 			void ReadValue(std::istream& stream, uint16_t& value);
 
 			void ReadValue(std::istream& stream, uint32_t& value);

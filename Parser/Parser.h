@@ -5,6 +5,7 @@
 #include <vector>
 #include <iostream>
 
+
 class Frame {
 
 public:
@@ -18,7 +19,7 @@ public:
     uint16_t Checksum;
     uint16_t EndMarker;
 
-    int ReadFromStream(std::istream& stream);
+    ReadResult ReadFromStream(std::istream& stream);
 };
 
 class FrameParser {

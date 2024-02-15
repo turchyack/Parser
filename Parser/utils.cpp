@@ -1,12 +1,18 @@
 #include <fstream>
 #include <vector>
 #include <winsock2.h>
+#include "utils.h"
 #pragma comment(lib, "Ws2_32.lib")
 
 
 namespace geodata {
     namespace parser {
         namespace utils {
+
+            enum class ReadResult {
+                Data,
+                EndOfStream = EOF
+            };
 
             void ReadValue(std::istream& stream, uint16_t& value) {
                 uint16_t temp = 0;
